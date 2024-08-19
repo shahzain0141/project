@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Prediction and Filtering</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 1.1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .result, .filter-result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Disease Diagnosis:</h1>
+        <form action="/" method="POST">
+            <label for="symptoms">Enter your symptoms:</label><br>
+            <textarea name="symptoms" rows="4" cols="50" placeholder="Enter symptoms"></textarea><br><br>
+            <input type="submit" value="Predict Disease">
+        </form>
+
+        {% if prediction %}
+            <div class="result">
+                <h2>Prediction Result:</h2>
+                <p><strong>Disease:</strong> {{ prediction }}</p>
+                {% if disease_info %}
+                    <p><strong>Description:</strong> {{ disease_info['Description'] }}</p>
+                    <p><strong>Diet:</strong> {{ disease_info['Diet'] }}</p>
+                    <p><strong>Medication:</strong> {{ disease_info['Medication'] }}</p>
+                    <p><strong>Precautions:</strong></p>
+                    <ul>
+                        {% if disease_info['Precautions'][0] !='consult doctor'%}
+                                <li>{{ disease_info['Precautions'][0] }}</li>
+                                <li>{{ disease_info['Precautions'][1] }}</li>
+                                <li>{{ disease_info['Precautions'][2] }}</li>
+                                <li>{{ disease_info['Precautions'][3] }}</li>
+                        {% else %}
+                                <li>{{ disease_info['Precautions'][0] }}</li>
+                        {% endif %}
+
+                    </ul>
+                {% endif %}
+            </div>
+        {% elif first_row %}
+            <div class="result">
+                <h2>No Disease Found:</h2>
+                <p>{{ first_row }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
